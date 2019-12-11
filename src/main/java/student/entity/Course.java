@@ -9,8 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "courses")
@@ -25,8 +28,8 @@ public class Course {
 	private Double fee;
 	private Boolean active;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Student> students = new HashSet<>();
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)	
+	private Set<Student> student = new HashSet<>();
 
 	public Course() {
 	}
@@ -86,13 +89,13 @@ public class Course {
 	public void setFee(Double fee) {
 		this.fee = fee;
 	}
-
-	public Set<Student> getStudents() {
-		return students;
+	@JsonIgnore
+	public Set<Student> getStudent() {
+		return student;
 	}
-
-	public void setStudents(Set<Student> students) {
-		this.students = students;
+	@JsonIgnore
+	public void setStudent(Set<Student> student) {
+		this.student = student;
 	}
 
 	@Override
