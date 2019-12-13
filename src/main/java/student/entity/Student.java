@@ -14,8 +14,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "students")
 public class Student {
@@ -63,11 +61,11 @@ public class Student {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	@JsonIgnore
+
 	public Set<Course> getCourse() {
 		return course;
 	}
-	@JsonIgnore
+
 	public void setCourses(Set<Course> course) {
 		this.course = course;
 	}
