@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import student.repository.StudentRepository;
 @RestController
 @CrossOrigin
 @RequestMapping("/student")
+@RefreshScope
 public class StudentController {
 	@Autowired
 	StudentRepository studentRepository;
