@@ -28,7 +28,7 @@ public class StudentController {
 	@Autowired
 	CourseRepository courseRepository;
 
-	@RequestMapping(value = "/get", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	List<Student> getStudents(@RequestParam(value = "courseID") String courseID) {
 
 		return studentRepository.findByCourseId(Long.parseLong(courseID));
