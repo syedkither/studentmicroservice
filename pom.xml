@@ -10,7 +10,6 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<!-- <version>2.0.9.RELEASE</version> -->
 		<version>2.2.2.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
@@ -20,8 +19,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<!-- <spring-cloud.version>Finchley.SR1</spring-cloud.version> -->
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+		<start-class>student.StudentserviceApplication</start-class>
 	</properties>
 
 	<dependencies>
@@ -91,6 +90,19 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+						<!-- 
+						If the spring-boot-maven-plugin is presented in your pom like the following:
+						Then the command mvn package is exactly the same as spring-boot:repackage, both will generate an executable jar.
+						If the maven plugin is not in your pom, then the generated jar will not be executable (regular jar) with mvn package.
+						spring-boot:repackage explicitly specify the spring-boot-maven-plugin in the command line.
+						 -->
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
