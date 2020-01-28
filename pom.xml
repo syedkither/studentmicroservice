@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
-		</dependency>
+		</dependency>		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -73,6 +73,31 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+		<!-- Loggin and tracing -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>4.11</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -93,12 +118,12 @@
 				<executions>
 					<execution>
 						<goals>
-						<!-- 
-						If the spring-boot-maven-plugin is presented in your pom like the following:
-						Then the command mvn package is exactly the same as spring-boot:repackage, both will generate an executable jar.
-						If the maven plugin is not in your pom, then the generated jar will not be executable (regular jar) with mvn package.
-						spring-boot:repackage explicitly specify the spring-boot-maven-plugin in the command line.
-						 -->
+							<!-- If the spring-boot-maven-plugin is presented in your pom like 
+								the following: Then the command mvn package is exactly the same as spring-boot:repackage, 
+								both will generate an executable jar. If the maven plugin is not in your 
+								pom, then the generated jar will not be executable (regular jar) with mvn 
+								package. spring-boot:repackage explicitly specify the spring-boot-maven-plugin 
+								in the command line. -->
 							<goal>repackage</goal>
 						</goals>
 					</execution>

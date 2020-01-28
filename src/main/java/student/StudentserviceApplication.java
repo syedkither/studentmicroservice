@@ -46,7 +46,7 @@ public class StudentserviceApplication implements WebMvcConfigurer {
 
 			// create a student
 
-			Student student = new Student("John Doe", 15);
+			Student student = new Student("John Doe", 15, "syed@gmail.com");
 
 			// save the student
 			studentRepository.save(student);
