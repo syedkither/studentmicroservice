@@ -20,23 +20,29 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 @Entity
 @Table(name = "students")
 public class Student {
 
 	@Id
+	@ApiModelProperty(notes = "The database generated member ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Size(min = 3, max = 50, message = "First Name must be between 3 and 50 characters")
 	@NotEmpty(message = "First name must not be empty")
+	@ApiModelProperty(notes = "The name of the student")
 	private String name;
 	@Min(value = 10, message = "Age should not be less than 10")
     @Max(value = 60, message = "Age should not be greater than 60")
 	@NotNull(message = "Age must not be empty")
+	@ApiModelProperty(notes = "The age of the student")
 	private Integer age;
 	@NotEmpty(message = "Email must not be empty")
 	@Email(message = "Email should be a valid email")
+	@ApiModelProperty(notes = "The email of the student")
 	private String email;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

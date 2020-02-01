@@ -9,7 +9,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import student.entity.Course;
@@ -19,7 +18,8 @@ import student.repository.StudentRepository;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-@EnableWebMvc
+// interfering with the spring boot auto configuration of the resources, i.e. the one that serves up swagger-ui. 
+//@EnableWebMvc // extention content negotiation will not work if want then uncomment bcos swagger ui will not work in boot and webmvc combination
 public class StudentserviceApplication implements WebMvcConfigurer {
 
 	public static void main(String[] args) {
