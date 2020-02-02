@@ -47,4 +47,4 @@ By default, this is the order in which the Spring content negotiation manager wi
 
 6) API Documentation
    ====================
-   swagger core is implemented at available @ http://localhost:8080/v2/api-docs
+   swagger core is implemented and available @ http://localhost:8080/v2/api-docs
