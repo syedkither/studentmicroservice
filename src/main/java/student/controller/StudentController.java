@@ -1,5 +1,6 @@
 package student.controller;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,9 +14,11 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +29,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import student.entity.Course;
 import student.entity.Student;
+import student.entity.StudentResponse;
+import student.entity.StudentVO;
 import student.exception.RecordNotFoundException;
+import student.mapper.StudentEntityMapper;
+import student.mapper.StudentResponseMapper;
 import student.repository.CourseRepository;
 import student.repository.StudentRepository;
 
@@ -42,12 +49,17 @@ import student.repository.StudentRepository;
 @Api(tags = "Student")
 public class StudentController {
 
-	protected static Logger logger = LoggerFactory.getLogger(StudentController.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(StudentController.class.getName());
 
 	@Autowired
-	StudentRepository studentRepository;
+	private StudentRepository studentRepository;
 	@Autowired
-	CourseRepository courseRepository;
+	private CourseRepository courseRepository;	
+	@Autowired
+    private StudentEntityMapper studentEntityMapper;
+	@Autowired
+    private StudentResponseMapper studentResponseMapper;
+	
 	@ApiOperation(value = "This endpoint is used to get the all student details")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = " Successfully retrieved list of students"),
@@ -58,39 +70,42 @@ public class StudentController {
 		    @ApiResponse(code = 400, message = " Bad request is received", response = Error.class),
 		    @ApiResponse(code = 500, message = " Server error", response = Error.class)
 		})
-	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	List<Student> getStudents(@ApiParam(value = "The Id of the course to register", required = true) @RequestParam(value = "courseID") String courseID) {
-		List<Student> aoStudent = studentRepository.findByCourseId(Long.parseLong(courseID));
+	@GetMapping(path = "/get")
+	List<StudentResponse> getStudents(@ApiParam(value = "The Id of the course to register", required = true) @RequestParam(value = "courseID") final String courseID) {
+		final List<Student> aoStudent = studentRepository.findByCourseId(Long.parseLong(courseID));
 		if(aoStudent.isEmpty()){
 			throw new RecordNotFoundException(String.format(
 					"Student list cann't be retrived,  because Course ID : %s doesn't exists", courseID));
 		}
-		return studentRepository.findByCourseId(Long.parseLong(courseID));
+		return studentResponseMapper.from(aoStudent);
 	}
 	@ApiOperation(value = "This endpoint is used to add student and register course")
-	@RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	void add(@Valid @RequestBody Student student, @RequestParam @Min(1)  String courseID) {		
+	@PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+	void add(@Valid @RequestBody final StudentVO studentvo, @RequestParam @Min(1)  final String courseID) {		
 
-		Course course = courseRepository.findById(Long.parseLong(courseID))
+		final Course course = courseRepository.findById(Long.parseLong(courseID))
 				.orElseThrow(() -> new RecordNotFoundException(String.format(
 						"Student Cann't be registered the course,  because Course ID : %s doesn't exists", courseID)));
 
 		// add courses to the student
-		student.getCourse().add(course);
+		studentvo.getCourse().add(course);
 		// update the student
+		final Student student = studentEntityMapper.from(studentvo);
 		studentRepository.save(student);
-		logger.info(String.format("Student is registered to course : %s ", courseID));
+		if (logger.isInfoEnabled()){
+			logger.info(MessageFormat.format("Student is registered to course {0}", courseID));
+		}
 
 	}
 	@ApiOperation(value = "This endpoint is used to remove the student details")
-	@RequestMapping(value = "/remove", method = RequestMethod.DELETE)
-	void remove(@RequestParam(value = "studentID") @Min(1)  String studentID) {
+	@DeleteMapping(path = "/remove")
+	void remove(@RequestParam(value = "studentID") @Min(1)  final String studentID) {
 		if (Objects.nonNull(studentID)) {
 			studentRepository.deleteById(Long.parseLong(studentID));
-			logger.info(String.format("Student ID : %s removed", studentID));
-		}else {
-			// logger.info(String.format("Student ID : %s doesn't exists",
-			// courseID));
+			if (logger.isInfoEnabled()){
+				logger.info(MessageFormat.format("Student ID {0} removed", studentID));
+			}
+		}else {			
 			throw new RecordNotFoundException(String.format("Student ID : %s doesn't exists", studentID));
 		}
 		

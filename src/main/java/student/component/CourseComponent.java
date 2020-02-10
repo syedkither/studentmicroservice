@@ -23,7 +23,7 @@ public class CourseComponent {
 
 	public void removeCourse(String courseID) {
 		logger.info("Removing course to student service from course service");
-		// courseRepository.deleteById(Long.parseLong(courseID));
+		
 		Optional<Course> entity = courseRepository.findById(Long.parseLong(courseID));
 		if (entity.isPresent()) {
 			entity.get().setActive(false);
