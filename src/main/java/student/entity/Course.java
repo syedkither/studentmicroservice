@@ -1,5 +1,6 @@
 package student.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "courses")
-public class Course {
+public class Course implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5315399578876782355L;
+
+	/**
+	 * 
+	 */
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

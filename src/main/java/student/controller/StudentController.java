@@ -28,14 +28,10 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import student.entity.Course;
-import student.entity.Student;
 import student.entity.StudentResponse;
 import student.entity.StudentVO;
 import student.exception.RecordNotFoundException;
-import student.mapper.StudentEntityMapper;
-import student.mapper.StudentResponseMapper;
-import student.repository.CourseRepository;
-import student.repository.StudentRepository;
+import student.service.StudentService;
 
 
 //https://medium.com/swlh/documenting-spring-boot-api-using-swagger2-14926e8e20a4
@@ -52,13 +48,8 @@ public class StudentController {
 	private static Logger logger = LoggerFactory.getLogger(StudentController.class.getName());
 
 	@Autowired
-	private StudentRepository studentRepository;
-	@Autowired
-	private CourseRepository courseRepository;	
-	@Autowired
-    private StudentEntityMapper studentEntityMapper;
-	@Autowired
-    private StudentResponseMapper studentResponseMapper;
+	private StudentService studentService;	
+	
 	
 	@ApiOperation(value = "This endpoint is used to get the all student details")
 	@ApiResponses(value = {
@@ -72,26 +63,25 @@ public class StudentController {
 		})
 	@GetMapping(path = "/get")
 	List<StudentResponse> getStudents(@ApiParam(value = "The Id of the course to register", required = true) @RequestParam(value = "courseID") final String courseID) {
-		final List<Student> aoStudent = studentRepository.findByCourseId(Long.parseLong(courseID));
+		final List<StudentResponse> aoStudent = studentService.findStudentByCourse(courseID);
 		if(aoStudent.isEmpty()){
 			throw new RecordNotFoundException(String.format(
 					"Student list cann't be retrived,  because Course ID : %s doesn't exists", courseID));
 		}
-		return studentResponseMapper.from(aoStudent);
+		return aoStudent;
 	}
 	@ApiOperation(value = "This endpoint is used to add student and register course")
 	@PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
 	void add(@Valid @RequestBody final StudentVO studentvo, @RequestParam @Min(1)  final String courseID) {		
 
-		final Course course = courseRepository.findById(Long.parseLong(courseID))
+		final Course course = studentService.findCourseByID(courseID)
 				.orElseThrow(() -> new RecordNotFoundException(String.format(
 						"Student Cann't be registered the course,  because Course ID : %s doesn't exists", courseID)));
 
 		// add courses to the student
 		studentvo.getCourse().add(course);
 		// update the student
-		final Student student = studentEntityMapper.from(studentvo);
-		studentRepository.save(student);
+		studentService.saveStudent(studentvo);
 		if (logger.isInfoEnabled()){
 			logger.info(MessageFormat.format("Student is registered to course {0}", courseID));
 		}
@@ -101,7 +91,7 @@ public class StudentController {
 	@DeleteMapping(path = "/remove")
 	void remove(@RequestParam(value = "studentID") @Min(1)  final String studentID) {
 		if (Objects.nonNull(studentID)) {
-			studentRepository.deleteById(Long.parseLong(studentID));
+			studentService.deleteById(studentID);
 			if (logger.isInfoEnabled()){
 				logger.info(MessageFormat.format("Student ID {0} removed", studentID));
 			}

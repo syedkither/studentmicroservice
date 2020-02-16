@@ -1,5 +1,6 @@
 package student.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +18,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "students")
-public class Student {
+public class Student implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1757033266063313720L;
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	
