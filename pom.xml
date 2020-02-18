@@ -33,6 +33,7 @@
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 		<start-class>student.StudentserviceApplication</start-class>
+		<qpid-broker.version>7.1.0</qpid-broker.version>
 	</properties>
 
 	<dependencies>
@@ -67,7 +68,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -102,19 +102,37 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-			<version>1.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.9.2</version>
 		</dependency>
-
+		<!-- include in memory qpid-broker -->
+		<!-- It will send messages to exchange with a routing key. If a receiver 
+			catch a message will save.Assertion will validate correct value: -->
+		<dependency>
+			<groupId>org.apache.qpid</groupId>
+			<artifactId>qpid-broker-core</artifactId>
+			<version>${qpid-broker.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.qpid</groupId>
+			<artifactId>qpid-broker-plugins-amqp-0-8-protocol</artifactId>
+			<version>${qpid-broker.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.qpid</groupId>
+			<artifactId>qpid-broker-plugins-memory-store</artifactId>
+			<version>${qpid-broker.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

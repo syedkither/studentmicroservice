@@ -14,13 +14,9 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class StudentVO implements Serializable {
 	
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 8577155903278060953L;
-	/**
-	 * 
-	 */
+	
 	
 	@ApiModelProperty(notes = "The database generated member ID")	
 	private Long id;

@@ -5,14 +5,14 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import student.entity.Course;
 import student.repository.CourseRepository;
 
-@Component
-public class CourseComponent {
-	private static final Logger logger = LoggerFactory.getLogger(CourseComponent.class);
+@Service
+public class CourseComponentService {
+	private static final Logger logger = LoggerFactory.getLogger(CourseComponentService.class);
 	@Autowired
 	private CourseRepository courseRepository;
 
