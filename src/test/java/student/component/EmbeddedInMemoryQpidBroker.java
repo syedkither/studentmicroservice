@@ -39,7 +39,7 @@ public class EmbeddedInMemoryQpidBroker implements AutoCloseable {
         shutdown();
     }
 
-    private Map<String, Object> createSystemConfig() throws IllegalConfigurationException {
+    private Map<String, Object> createSystemConfig() {
         Map<String, Object> attributes = new HashMap<>();
         URL initialConfigUrl = this.initialConfigurationUrl;
         if (initialConfigUrl == null) {            
@@ -70,15 +70,6 @@ public class EmbeddedInMemoryQpidBroker implements AutoCloseable {
     public EmbeddedInMemoryQpidBroker withStartupLoggedToSystemOut(boolean enabled) {
         setStartupLoggedToSystemOut(enabled);
         return this;
-    }
-
-    public static void main(String[] args) {
-        try(EmbeddedInMemoryQpidBroker broker = new EmbeddedInMemoryQpidBroker()) {
-            broker.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
     }
 
     public void setInitialConfigurationLocation(URL initialConfigurationUrl) {

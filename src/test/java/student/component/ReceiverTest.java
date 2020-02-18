@@ -16,9 +16,9 @@ import student.entity.Course;
 
 public class ReceiverTest extends AbstractTest {
 
-	private final static String EXCHANGE_NAME = "spring-boot-exchange";
-	private final static String QUEUE_ROUTINGKEY_ADD = "routingKeyadd-boot";
-	private final static String QUEUE_ROUTINGKEY_REMOVE = "routingKeyremove-boot";
+	private static final String EXCHANGE_NAME = "spring-boot-exchange";
+	private static final String QUEUE_ROUTINGKEY_ADD = "routingKeyadd-boot";
+	private static final String QUEUE_ROUTINGKEY_REMOVE = "routingKeyremove-boot";
 	
 	@Autowired
 	protected RabbitTemplate rabbitTemplate;
@@ -27,9 +27,9 @@ public class ReceiverTest extends AbstractTest {
 	public static final EmbeddedInMemoryQpidBrokerRule qpidBrokerRule = new EmbeddedInMemoryQpidBrokerRule();
 
 	@Test
-	public void testWithReceiverRoutingKey() throws Exception {
+	public void testWithReceiverRoutingKey() {
 
-		Map<String, Object> courseDetails = new HashMap<String, Object>();
+		Map<String, Object> courseDetails = new HashMap<>();
 		courseDetails.put("id", 1);
 		courseDetails.put("courseId", 4);
 		courseDetails.put("description", "Data Analyst");
@@ -40,16 +40,7 @@ public class ReceiverTest extends AbstractTest {
 		doNothing().when(courseComponent).addCourse(any(Course.class));
 
 		rabbitTemplate.convertAndSend(EXCHANGE_NAME, QUEUE_ROUTINGKEY_ADD, courseDetails);
-		rabbitTemplate.convertAndSend(EXCHANGE_NAME,QUEUE_ROUTINGKEY_REMOVE, "4");
-		
-		// assertThat(firstReceiver.getCounter()).isEqualTo(3);
+		rabbitTemplate.convertAndSend(EXCHANGE_NAME,QUEUE_ROUTINGKEY_REMOVE, "4");		
 
-	}
-
-	/*@Test
-	public void testNoRoutingkey() throws Exception {
-		doNothing().when(courseComponent).removeCourse(any(String.class));
-	//	rabbitTemplate.convertAndSend(EXCHANGE_NAME,"routing_not_found", "Hello from RabbitMQ Sent 1!");
-		//Thread.sleep(5000);
-	}*/
+	}	
 }

@@ -16,11 +16,11 @@ public class Receiver {
 
 	CourseComponentService courseComponent;
 	
-	public final static String QUEUE_ROUTINGKEY_ADD = "routingKeyadd-boot";
-	public final static String QUEUE_ROUTINGKEY_REMOVE = "routingKeyremove-boot";
-	public final static String EXCHANGE_NAME = "spring-boot-exchange";
-	private final static String QUEUE_NAME_1 = "StudentAQ";
-	private final static String QUEUE_NAME_2 = "StudentRQ";
+	public static final String QUEUE_ROUTINGKEY_ADD = "routingKeyadd-boot";
+	public static final String QUEUE_ROUTINGKEY_REMOVE = "routingKeyremove-boot";
+	public static final String EXCHANGE_NAME = "spring-boot-exchange";
+	private static final String QUEUE_NAME_1 = "StudentAQ";
+	private static final String QUEUE_NAME_2 = "StudentRQ";
 
 
 	@Autowired
