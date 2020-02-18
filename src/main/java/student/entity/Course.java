@@ -19,15 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "courses")
 public class Course implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5315399578876782355L;
-
-	/**
-	 * 
-	 */
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -113,6 +105,9 @@ public class Course implements Serializable {
 		return "Course{" + "id=" + id + ", title='" + title + '\'' + ", abbreviation='" + abbreviation + '\''
 				+ ", active='" + active + '\'' + ", fee=" + fee + '}';
 	}
+	public static Builder builder(){
+        return new Builder();
+    }
 
 	public static class Builder {
 		private String title;
