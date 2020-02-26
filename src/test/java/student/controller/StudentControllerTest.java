@@ -53,6 +53,19 @@ public class StudentControllerTest extends AbstractTest {
 	      assertTrue(studentvo[0].getName().equalsIgnoreCase("Syed Kither"));
 	   }
 	   @Test
+	   public void getNoRecord() throws Exception {
+	      String uri = "/student/get?courseID=1";
+	      List<StudentResponse> aoStudent = new ArrayList<>();
+	      
+	      when(studentService.findStudentByCourse(any(String.class))).thenReturn(aoStudent);
+	      
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+	         .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+	      
+	      int status = mvcResult.getResponse().getStatus();
+	      assertEquals(404, status);
+	   }
+	   @Test
 	   public void create() throws Exception {
 	      String uri = "/student/add?courseID=4";
 	      Course course = new Course("Web Basics", "WB", 130.0, true);
@@ -89,5 +102,13 @@ public class StudentControllerTest extends AbstractTest {
 	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
 	      int status = mvcResult.getResponse().getStatus();
 	      assertEquals(200, status);
+	   }
+	   @Test
+	   public void deleteOnNoRecord() throws Exception {
+	      String uri = "/student/remove/";
+	      doNothing().when(studentService).deleteById(any(String.class));
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
+	      int status = mvcResult.getResponse().getStatus();
+	      assertEquals(400, status);
 	   }
 	}
