@@ -33,7 +33,7 @@ public class StudentControllerTest extends AbstractTest {
 	   
 	   @Mock
 	   private StudentService studentService;
-	   
+
 	   @Test
 	   public void get() throws Exception {
 	      String uri = "/student/get?courseID=1";

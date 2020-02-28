@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import student.component.CourseComponentService;
 import student.repository.CourseRepository;
 import student.repository.StudentRepository;
+import student.service.StudentService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
