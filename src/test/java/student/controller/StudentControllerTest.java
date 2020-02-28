@@ -81,6 +81,39 @@ public class StudentControllerTest extends AbstractTest {
 	      
 	   } 
 	   
+	   @Test
+	   public void requestParamValidate() throws Exception {
+	      String uri = "/student/add";
+	      Course course = new Course("Web Basics", "WB", 130.0, true);
+	      when(studentService.findCourseByID(any(String.class))).thenReturn(Optional.of(course));
+	      
+	      String inputJson = super.mapToJson(studentResponse());
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+	         .contentType(MediaType.APPLICATION_JSON_VALUE)
+	         .content(inputJson)).andReturn();
+	      
+	      int status = mvcResult.getResponse().getStatus();
+	      assertEquals(400, status);
+	      
+	   } 
+	   
+	   @Test
+	   public void validateStudentVO() throws Exception {
+	      String uri = "/student/add?courseID=4";
+	      Course course = new Course("Web Basics", "WB", 130.0, true);
+	      when(studentService.findCourseByID(any(String.class))).thenReturn(Optional.of(course));
+	      StudentResponse resp = studentResponse();
+	      resp.setAge(1);
+	      String inputJson = super.mapToJson(resp);
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+	         .contentType(MediaType.APPLICATION_JSON_VALUE)
+	         .content(inputJson)).andReturn();
+	      
+	      int status = mvcResult.getResponse().getStatus();
+	      assertEquals(400, status);
+	      
+	   } 
+	   
 	   private StudentResponse studentResponse(){
 		   	Course course = new Course("Web Basics", "WB", 130.0, true);
 		    Set<Course> courseSet = new HashSet<>(); 
