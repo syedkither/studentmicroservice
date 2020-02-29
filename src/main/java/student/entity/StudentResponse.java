@@ -4,12 +4,24 @@ import java.util.Set;
 
 import org.springframework.util.StringUtils;
 
+import lombok.Getter;
+import lombok.Setter;
 import student.component.ErrorMessageConstants;
 public class StudentResponse {
-	private Long id;	
+	@Getter
+	@Setter
+	private Long id;
+	@Getter
+	@Setter
 	private String name;	
-	private Integer age;	
-	private String email;	
+	@Getter
+	@Setter
+	private Integer age;
+	@Getter
+	@Setter
+	private String email;
+	@Getter
+	@Setter
 	private Set<Course> course;
 	
 	private StudentResponse(final StudentResponseBuilder studentResponseBuilder){
