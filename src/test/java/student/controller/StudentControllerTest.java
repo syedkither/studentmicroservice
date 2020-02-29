@@ -136,6 +136,20 @@ public class StudentControllerTest extends AbstractTest {
 	      int status = mvcResult.getResponse().getStatus();
 	      assertEquals(200, status);
 	   }
+	   
+	   @Test
+	   public void testServerException() throws Exception {
+		   	  String uri = "/student/add?courseID=4";
+		      when(studentService.findCourseByID(any(String.class))).thenThrow(new RuntimeException());
+		      
+		      String inputJson = super.mapToJson(studentResponse());
+		      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+		         .contentType(MediaType.APPLICATION_JSON_VALUE)
+		         .content(inputJson)).andReturn();
+		      
+		      int status = mvcResult.getResponse().getStatus();
+		      assertEquals(500, status);
+	   }
 	   @Test
 	   public void deleteOnNoRecord() throws Exception {
 	      String uri = "/student/remove/";
