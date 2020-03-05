@@ -197,7 +197,7 @@
 								<rule>
 									<limits>
 										<limit>
-											<minimum>0.3</minimum>
+											<minimum>0.8</minimum>
 											<!-- <minimum>0.9</minimum> -->
 										</limit>
 									</limits>

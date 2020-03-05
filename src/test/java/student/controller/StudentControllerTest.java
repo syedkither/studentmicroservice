@@ -25,6 +25,9 @@ import student.entity.StudentVO;
 import student.service.StudentService;
 public class StudentControllerTest extends AbstractTest {
 	   
+	private static final String CREATE_URL = "/student/get?courseID=1";
+	private static final String GET_URL = "/student/get?courseID=1";
+	private static final String REMOVE_URL = "/student/add?courseID=4";
 	   @Override
 	   @Before
 	   public void setUp() {
@@ -33,17 +36,21 @@ public class StudentControllerTest extends AbstractTest {
 	   
 	   @Mock
 	   private StudentService studentService;
+	   
+	   public Course buildCourse(){
+		   return new Course("Web Basics", "WB", 130.0, true);
+	   }
 
 	   @Test
 	   public void get() throws Exception {
-	      String uri = "/student/get?courseID=1";
+	     
 	      List<StudentResponse> aoStudent = new ArrayList<>();
 	      
 	      aoStudent.add(studentResponse());
 	      
 	      when(studentService.findStudentByCourse(any(String.class))).thenReturn(aoStudent);
 	      
-	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(GET_URL)
 	         .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 	      
 	      int status = mvcResult.getResponse().getStatus();
@@ -54,12 +61,12 @@ public class StudentControllerTest extends AbstractTest {
 	   }
 	   @Test
 	   public void getNoRecord() throws Exception {
-	      String uri = "/student/get?courseID=1";
+	     
 	      List<StudentResponse> aoStudent = new ArrayList<>();
 	      
 	      when(studentService.findStudentByCourse(any(String.class))).thenReturn(aoStudent);
 	      
-	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(GET_URL)
 	         .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 	      
 	      int status = mvcResult.getResponse().getStatus();
@@ -67,12 +74,12 @@ public class StudentControllerTest extends AbstractTest {
 	   }
 	   @Test
 	   public void create() throws Exception {
-	      String uri = "/student/add?courseID=4";
-	      Course course = new Course("Web Basics", "WB", 130.0, true);
+	     
+	      Course course = buildCourse();
 	      when(studentService.findCourseByID(any(String.class))).thenReturn(Optional.of(course));
 	      
 	      String inputJson = super.mapToJson(studentResponse());
-	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(CREATE_URL)
 	         .contentType(MediaType.APPLICATION_JSON_VALUE)
 	         .content(inputJson)).andReturn();
 	      
@@ -83,12 +90,12 @@ public class StudentControllerTest extends AbstractTest {
 	   
 	   @Test
 	   public void requestParamValidate() throws Exception {
-	      String uri = "/student/add";
-	      Course course = new Course("Web Basics", "WB", 130.0, true);
+	      
+	      Course course = buildCourse();
 	      when(studentService.findCourseByID(any(String.class))).thenReturn(Optional.of(course));
 	      
 	      String inputJson = super.mapToJson(studentResponse());
-	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(CREATE_URL)
 	         .contentType(MediaType.APPLICATION_JSON_VALUE)
 	         .content(inputJson)).andReturn();
 	      
@@ -99,13 +106,13 @@ public class StudentControllerTest extends AbstractTest {
 	   
 	   @Test
 	   public void validateStudentVO() throws Exception {
-	      String uri = "/student/add?courseID=4";
-	      Course course = new Course("Web Basics", "WB", 130.0, true);
+	     
+	      Course course = buildCourse();
 	      when(studentService.findCourseByID(any(String.class))).thenReturn(Optional.of(course));
 	      StudentResponse resp = studentResponse();
 	      resp.setAge(1);
 	      String inputJson = super.mapToJson(resp);
-	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(CREATE_URL)
 	         .contentType(MediaType.APPLICATION_JSON_VALUE)
 	         .content(inputJson)).andReturn();
 	      
@@ -115,7 +122,7 @@ public class StudentControllerTest extends AbstractTest {
 	   } 
 	   
 	   private StudentResponse studentResponse(){
-		   	Course course = new Course("Web Basics", "WB", 130.0, true);
+		   	Course course = buildCourse();
 		    Set<Course> courseSet = new HashSet<>(); 
 		    courseSet.add(course);
 		    final StudentResponseBuilder studentResponseBuilder = StudentResponse.builder();
@@ -130,20 +137,20 @@ public class StudentControllerTest extends AbstractTest {
 	  
 	   @Test
 	   public void delete() throws Exception {
-	      String uri = "/student/remove?studentID=1";
+	      
 	      doNothing().when(studentService).deleteById(any(String.class));
-	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(REMOVE_URL)).andReturn();
 	      int status = mvcResult.getResponse().getStatus();
 	      assertEquals(200, status);
 	   }
 	   
 	   @Test
 	   public void testServerException() throws Exception {
-		   	  String uri = "/student/add?courseID=4";
+		   	  
 		      when(studentService.findCourseByID(any(String.class))).thenThrow(new RuntimeException());
 		      
 		      String inputJson = super.mapToJson(studentResponse());
-		      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+		      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(CREATE_URL)
 		         .contentType(MediaType.APPLICATION_JSON_VALUE)
 		         .content(inputJson)).andReturn();
 		      
@@ -152,9 +159,9 @@ public class StudentControllerTest extends AbstractTest {
 	   }
 	   @Test
 	   public void deleteOnNoRecord() throws Exception {
-	      String uri = "/student/remove/";
+	     
 	      doNothing().when(studentService).deleteById(any(String.class));
-	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
+	      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(REMOVE_URL)).andReturn();
 	      int status = mvcResult.getResponse().getStatus();
 	      assertEquals(400, status);
 	   }
